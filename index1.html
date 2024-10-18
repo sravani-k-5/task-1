@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Weather</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        .weather-card {
+            background: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1 1 250px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+            transition: transform 0.3s;
+        }
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            text-align: center;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+        .weather-info {
+            margin: 10px 0;
+            font-size: 1.3em;
+        }
+        #temperature {
+            color: #ff5722;
+        }
+        #wind-speed {
+            color: #1e88e5;
+        }
+        #description {
+            color: #8e24aa;
+        }
+        #observation-time {
+            color: #e67b7b;
+            font-style: italic;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Current Weather</h1>
+    <div class="flex-container">
+        <div id="weather-card" class="weather-card">
+            <p id="temperature" class="weather-info">Temperature</p>
+            <p id="wind-speed" class="weather-info">Wind Speed</p>
+            <p id="description" class="weather-info">Weather Code</p>
+            <p id="observation-time" class="weather-info">Observation Time</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const temperatureEl = document.getElementById('temperature');
+            const windSpeedEl = document.getElementById('wind-speed');
+            const descriptionEl = document.getElementById('description');
+            const observationTimeEl = document.getElementById('observation-time');
+
+          
+                fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&current_weather=true')
+                    .then(response => response.json())
+                    .then(data => {
+                        const weather = data.current_weather;
+                        temperatureEl.textContent = `Temperature:${weather.temperature}°C`;
+                        windSpeedEl.textContent = `Wind Speed: ${weather.windspeed} km/h`;
+                        descriptionEl.textContent = `Weather Code: ${weather.weathercode}`;
+                        observationTimeEl.textContent = `Observation Time: ${new Date(weather.time).toLocaleString()}`;
+                    })
+        });
+    </script>
+</body>
+</html>

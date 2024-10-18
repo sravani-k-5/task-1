@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1 {
+    color: rgb(51, 51, 51);
+    margin-bottom: 20px;
+}
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+div {
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgb(203, 182, 182)
+}
+div img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+div:hover img {
+    transform: scale(1);
+}
+p {
+    background-color: rgba(0, 0, 0, 0.6);
+    color:white;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: opacity 0.1s ;
+}
+div:hover p {
+    opacity: 1;
+}
+</style>
+</head>
+<body>
+    <script>
+        let div=document.createElement("card");
+        div.className="gallery"
+        document.body.appendChild(div);
+        fetch('https://picsum.photos/v2/list')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(photo => {
+                    let box = document.createElement('div');
+                    div.appendChild(box);
+                    img = document.createElement('img');
+                    img.src = photo.download_url;
+                    box.appendChild(img);
+                    author = document.createElement('p');
+                    author.textContent =` By: ${photo.author}`;
+                    box.appendChild(author);
+                });
+            });
+    </script>
+</body>
+</html>

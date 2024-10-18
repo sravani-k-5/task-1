@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random User Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .user-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 19px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+            margin: 10px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #00796b;
+            text-align: center;
+            width: 100%;
+        }
+
+        .user-info {
+            font-size: 1em;
+            color: #37474f;
+            margin: 5px 0;
+        }
+
+        .user-picture {
+            border-radius: 50%;
+            margin-bottom: 15px;
+            width: 100px;
+            height: 100px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            .user-container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .user-info {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Users</h1>
+    <div id="Ashesh"></div>
+
+    <script>
+        let count = parseInt(prompt("enter an menber: "))
+        document.addEventListener('DOMContentLoaded', () => {
+            const usersGridEl = document.getElementById('Ashesh');
+
+            function fetchUsers(count) {
+                return fetch(`https://randomuser.me/api/?results=${count}`)
+                    .then(response => response.json())
+                    .then(data => data.results)
+        }
+            function displayUsers(users){
+                users.forEach(user => {
+                    const userContainer = document.createElement('div');
+                    userContainer.className = 'user-container';
+
+                    userContainer.innerHTML = `
+                        <img class="user-picture" src="${user.picture.large}" alt="User Picture">
+                        <p class="user-info">Name: ${user.name.first} ${user.name.last}</p>
+                        <p class="user-info">Email: ${user.email}</p>
+                        <p class="user-info">Location: ${user.location.city}, ${user.location.country}</p>
+                        <p class="user-info">Phone: ${user.phone}</p>
+                        <p class="user-info">DOB: ${new Date(user.dob.date).toLocaleDateString()}</p>
+                    `;
+                    usersGridEl.appendChild(userContainer);
+                });
+          }
+            fetchUsers(count).then(displayUsers);
+        });
+    </script>
+</body>
+</html>
